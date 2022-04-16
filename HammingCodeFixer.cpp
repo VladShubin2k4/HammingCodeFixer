@@ -50,25 +50,22 @@ void fix(int& mistake, std::string& input) {
     }
 }
 
+void Split_in_parts(std::vector<std::string>& parts, std::string& input) {
+    std::pair<int, int> iters(0,0);    //i,j
+    for(;iters.first < input.length();iters.first += 15) {
+        std::string tmp(input, iters.first, 15);
+        parts[iters.second++] = tmp;
+        ++iters.first;
+    }
+}
+
 void prepare_code(std::vector<std::string>& parts, std::string& input) {
-    char cmd;
-    int j = 0;
-    std::cout << "Are there any separating spaces?\n"; std::cin >> cmd;
-    if (cmd == 'y') {
-        for (int i = 0; i < input.length(); i += 15) {
-            std::string tmp(input, i, 15);
-            parts[j++] = tmp;
-            ++i;
-        }
-    }
-    else {
+    std::cout << "Are there any separating spaces: y/n?\n";
+    char c;std::cin >> c;
+    if (c == 'n')
         for (int i = 15; i < input.length(); i += 16)  input.insert(i, " ");
-        for (int i = 0; i < input.length(); i += 15) {
-            std::string tmp(input, i, 15);
-            parts[j++] = tmp;
-            ++i;
-        }
-    }
+
+    Split_in_parts(parts, input);
 }
 
 void input_code(std::string& input) {
@@ -102,7 +99,7 @@ int main() {
         char c; std::cin >> c;
         if (c == 'y') freopen("res.txt", "w", stdout);
     }
-    std::cout << "\n\n";
+    std::cout << std::endl;
     for (int i = 0; i < res.length(); ++i) {
         int pow = 7, code = 0;
         while (res[i] != ' ' && i < res.length()) code += fastpow(2, pow--) * static_cast<int>(res[i++] - 48);
