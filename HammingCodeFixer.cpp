@@ -10,7 +10,7 @@
 int fastpow(int a, int n) {
     int res = 1;
 	while(n){
-		if (n%2) res = (res * a);
+		if (n%2) res*= a;
 		a *= a;
 		n >>= 1;
 	}
@@ -51,8 +51,7 @@ void fix(int& mistake, std::string& input) {
 }
 
 void Split_in_parts(std::vector<std::string>& parts, std::string& input) {
-    std::pair<int, int> iters(0,0);    //i,j
-    for(;iters.first < input.length();iters.first += 15) {
+    for(std::pair<int, int> iters(0, 0); iters.first < input.length(); iters.first += 15) {
         std::string tmp(input, iters.first, 15);
         parts[iters.second++] = tmp;
         ++iters.first;
@@ -76,6 +75,8 @@ int main() {
     std::ios::sync_with_stdio(false);
     SetConsoleCP(1251); SetConsoleOutputCP(1251);
 
+    std::cout << "Input your code: ";
+
     int mistake = 0;
     std::string input, res;
     input_code(input);
@@ -93,13 +94,14 @@ int main() {
 
     std::cout << "\nSplit in eights(8): y/n?\n";
     char c; std::cin >> c;
+
     if (c == 'y') {
         for (int i = 8; i < res.length(); i += 9) res.insert(i, " ");
         std::cout << "Output the result in file: y/n?\n";
         char c; std::cin >> c;
         if (c == 'y') freopen("res.txt", "w", stdout);
     }
-    std::cout << std::endl;
+
     for (int i = 0; i < res.length(); ++i) {
         int pow = 7, code = 0;
         while (res[i] != ' ' && i < res.length()) code += fastpow(2, pow--) * static_cast<int>(res[i++] - 48);
